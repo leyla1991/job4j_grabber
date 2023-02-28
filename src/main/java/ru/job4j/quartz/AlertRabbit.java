@@ -3,9 +3,7 @@ package ru.job4j.quartz;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 
 import static org.quartz.JobBuilder.*;
@@ -31,6 +29,8 @@ public class AlertRabbit {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -41,11 +41,13 @@ public class AlertRabbit {
         }
     }
 
-    public static int rabbitProperties() throws IOException {
-        File file = new File("src/main/resources/rabbit.properties");
-        Properties propert = new Properties();
-        propert.load(new FileReader(file));
-        int timePrint = Integer.parseInt(propert.getProperty("rabbit.interval"));
+    public static int rabbitProperties() throws Exception {
+        Properties properties = new Properties();
+        try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
+                properties.load(in);
+            }
+
+        int timePrint = Integer.parseInt(properties.getProperty("rabbit.interval"));
         return timePrint;
     }
 }
