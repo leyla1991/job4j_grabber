@@ -15,9 +15,8 @@ import static org.quartz.TriggerBuilder.*;
 
 public class AlertRabbit {
 
-
     public static void main(String[] args) {
-        try (Connection connection = init()){
+        try (Connection connection = init()) {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDataMap data = new JobDataMap();
@@ -68,7 +67,7 @@ public class AlertRabbit {
         @Override
         public void execute(JobExecutionContext context) {
             System.out.println("Rabbit runs here ...");
-            Connection connection =(Connection) context.getJobDetail().getJobDataMap().get("connection");
+            Connection connection = (Connection) context.getJobDetail().getJobDataMap().get("connection");
            try (PreparedStatement preparedStatement = init().prepareStatement("insert into rabbit(created_date) values (?);",
                     Statement.RETURN_GENERATED_KEYS)) {
                preparedStatement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
