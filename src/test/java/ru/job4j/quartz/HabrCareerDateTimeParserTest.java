@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.*;
 
 class HabrCareerDateTimeParserTest {
 
-
     @Test
     void whenDateRight() {
         String result = "2023-04-16T15:27:03+03:00";
