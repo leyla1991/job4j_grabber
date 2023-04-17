@@ -15,7 +15,6 @@ public class Post {
 
      private LocalDateTime create;
 
-
      public Post(int id, String title, String link, String description, LocalDateTime create) {
          this.id = id;
          this.title = title;
@@ -26,8 +25,12 @@ public class Post {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Post post = (Post) o;
         return id == post.id && link.equals(post.link);
     }
