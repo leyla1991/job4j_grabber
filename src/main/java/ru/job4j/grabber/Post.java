@@ -16,7 +16,6 @@ public class Post {
      private LocalDateTime create;
 
      public Post() {
-
      }
 
      public Post(int id, String title, String link, String description, LocalDateTime create) {
@@ -26,6 +25,13 @@ public class Post {
          this.description = description;
          this.create = create;
      }
+
+    public Post(String title, String description, String link, LocalDateTime create) {
+         this.title = title;
+         this.link = link;
+         this.description = description;
+         this.create = create;
+    }
 
     public int getId() {
         return id;
