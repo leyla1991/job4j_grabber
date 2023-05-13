@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.StringJoiner;
 
 public class HabrCareerParse implements Parse {
 
@@ -29,22 +31,12 @@ public class HabrCareerParse implements Parse {
             for (Post post : list) {
                 System.out.println(post);
             }
-
     }
 
-    private static String retrieveDescription(String link) {
-        StringBuilder des = new StringBuilder();
-        Connection connection = Jsoup.connect(PAGE_LINK);
-        Document document = null;
-        try {
-            document = connection.get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (document != null) {
-        des.append(document.select(".vacancy-description__text").text());
-        }
-        return des.toString();
+    private static String retrieveDescription(String link) throws IOException {
+        Document document = Jsoup.connect(link).get();
+        Element row = document.selectFirst(".vacancy-description__text");
+        return row.text();
     }
 
     @Override
@@ -60,9 +52,9 @@ public class HabrCareerParse implements Parse {
                     Element dateElement = row.select(".vacancy-card__date").first();
                     Element dElement = dateElement.child(0);
                     String vacancyName = titleElement.text();
-                    String description = retrieveDescription(vacancyName);
                     LocalDateTime date = new HabrCareerDateTimeParser().parse(dElement.attr("datetime"));
                     String linkEl = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
+                    String description = retrieveDescription(linkEl);
                     Post post = new Post();
                     post.setDescription(description);
                     post.setCreate(date);

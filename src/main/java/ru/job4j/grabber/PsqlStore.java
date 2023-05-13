@@ -44,7 +44,8 @@ public class PsqlStore implements Store {
     public List<Post> getAll() {
         List<Post> posts = new ArrayList<>();
         try (PreparedStatement preparedStatement = cnn.prepareStatement("SELECT * FROM post")) {
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            preparedStatement.executeQuery();
+            try (ResultSet resultSet = preparedStatement.getResultSet()) {
                 while (resultSet.next()) {
                     posts.add(createPost(resultSet));
                 }
